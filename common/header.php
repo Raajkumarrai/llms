@@ -313,7 +313,7 @@ $resFetch = mysqli_query($con, $sqlFetch);
         </nav>
     </div>
     <div id="superModalDiv">
-        <div id="maindiv" onclick="crossModalClk(event)">
+        <div id="maindiv" style="position: fixed !important;" onclick="crossModalClk(event)">
             <div id="secondMaindiv">
                 <div id="cross" onclick="closeModal()">X</div>
                 <div id="contentDiv">

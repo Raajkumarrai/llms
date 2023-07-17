@@ -1,4 +1,63 @@
 <?php
+if (isset($_GET['error'])) {
+    echo '<div class="fullcontainerToast">
+    <div class="toastifier">
+        <div class="toastifierContent errorToast ">
+        <div class="cross" onclick="crossClk()">X</div>
+
+        <div class="innercontent">
+            <!-- <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z"
+            />
+            </svg> -->
+
+            <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                d="M10 0C15.53 0 20 4.47 20 10C20 15.53 15.53 20 10 20C4.47 20 0 15.53 0 10C0 4.47 4.47 0 10 0ZM13.59 5L10 8.59L6.41 5L5 6.41L8.59 10L5 13.59L6.41 15L10 11.41L13.59 15L15 13.59L11.41 10L15 6.41L13.59 5Z"
+            />
+            </svg>
+
+            <span> ' . $_GET['error'] . '</span>
+        </div>
+            </div>
+        </div>
+    </div>';
+}
+if (isset($_GET['success'])) {
+    echo '<div class="fullcontainerToast">
+    <div class="toastifier">
+        <div class="toastifierContent successToast ">
+        <div class="cross" onclick="crossClk()">X</div>
+
+        <div class="innercontent">
+            <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z"
+            />
+            </svg>
+            <span> ' . $_GET['success'] . '</span>
+        </div>
+            </div>
+        </div>
+    </div>';
+}
+
 include "../common/backendConnector.php";
 
 // db connection in (lms) db
@@ -32,23 +91,20 @@ if (isset($_POST['addContent'])) {
 
     if (mysqli_num_rows($resDub) > 0) {
         // Duplicate record found, redirect to the desired page
-        header("Location: subcategory.php");
+        header("Location: subcategory.php?error=Subcategory Already Exist");
         exit; // It's a good practice to include exit() after redirecting to prevent further execution
     } else {
-        // No duplicate record found, proceed with your logic
-
-        // Insert the new record or perform other operations
+        header("Location: subcategory.php?error=Some error accuired");
     }
-
+    
 
 
     // to insert data into db
     $sql = "INSERT INTO `subcategory` (`subcatname`, `cname`, `cId`) VALUES ('$subCname', '$catName', '$cid')";
     if (mysqli_query($con, $sql)) {
-        header("Location: " . $_SERVER['PHP_SELF']);
-        // echo "Inserted success";
+        header("Location: " . $_SERVER['PHP_SELF'].'?success=Subcategory Added Successfully');
     } else {
-        // echo "Inserted Success";
+        header("Location: subcategory.php?error=Some error accuired");
     }
 }
 
@@ -59,9 +115,9 @@ if (isset($_GET['delete'])) {
     $sqlDel = "DELETE FROM `subcategory` WHERE `id`='$id'";
 
     if (mysqli_query($con, $sqlDel)) {
-        header("Location: " . $_SERVER['PHP_SELF']);
+        header("Location: " . $_SERVER['PHP_SELF']. '?success=Subcategory Deleted Successfully');
     } else {
-        echo "Cannot Delete";
+        header("Location: subcategory.php?error=Cannot Delete");
     }
 }
 
@@ -98,9 +154,9 @@ if (isset($_POST['updateContent'])) {
 
     $sql = "UPDATE `subcategory` SET `cname`='$catName', `cid`='$cid', `subcatname`='$subCname' WHERE `id`='$id'";
     if (mysqli_query($con, $sql)) {
-        header("Location: " . $_SERVER['PHP_SELF']);
+        header("Location: " . $_SERVER['PHP_SELF'].'success?Update success');
     } else {
-        echo "Cannot Update";
+        header("Location: " . $_SERVER['PHP_SELF'].'error?Cannot update');
     }
 }
 
@@ -152,7 +208,7 @@ if (isset($_GET['search'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sub-Category</title>
     <link rel="stylesheet" href="./sidestyles.css">
-    <link rel="stylesheet" href="../CSS/globals.css">
+    <link rel="stylesheet" href="../CSS/global.css">
     <link rel="stylesheet" href="./CSS/model.css">
     <style>
         select {
@@ -303,6 +359,31 @@ if (isset($_GET['search'])) {
             modal.style.display = "none";
             window.location.href = urlWithoutParams;
         })
+        
+        const fullcontainerToast = document.querySelectorAll(".fullcontainerToast");
+        setTimeout(() => {
+            for (let i = 0; i < fullcontainerToast.length; i++) {
+                fullcontainerToast[i].style.right = "0px";
+                document.body.style.overflow = "hidden";
+            }
+        }, 200);
+        setInterval(() => {
+            closeModal(); // Call the closeModal function
+        }, 2000);
+        const crossClk = () => {
+            closeModal(); // Call the closeModal function
+        };
+
+        const closeModal = () => {
+            for (let i = 0; i < fullcontainerToast.length; i++) {
+                fullcontainerToast[i].style.right = "-700px";
+                window.location.reload();
+            }
+        };
+        if (window.location.search.includes('error') || window.location.search.includes('success')) {
+            history.replaceState({}, document.title, window.location.pathname);
+        }
+        document.body.style.overflowX = "hidden";
     </script>
 </body>
 
