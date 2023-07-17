@@ -117,7 +117,7 @@ if (isset($_GET['delete'])) {
     if (mysqli_query($con, $sqlDel)) {
         header("Location: " . $_SERVER['PHP_SELF']. '?success=Subcategory Deleted Successfully');
     } else {
-        header("Location: subcategory.php?error=Cannot Delete");
+        header("Location: " . $_SERVER['PHP_SELF']. '?error=Cannot Delete');
     }
 }
 
@@ -154,9 +154,9 @@ if (isset($_POST['updateContent'])) {
 
     $sql = "UPDATE `subcategory` SET `cname`='$catName', `cid`='$cid', `subcatname`='$subCname' WHERE `id`='$id'";
     if (mysqli_query($con, $sql)) {
-        header("Location: " . $_SERVER['PHP_SELF'].'success?Update success');
+        header("Location: " . $_SERVER['PHP_SELF'].'?success=Update success');
     } else {
-        header("Location: " . $_SERVER['PHP_SELF'].'error?Cannot update');
+        header("Location: " . $_SERVER['PHP_SELF'].'?error=Cannot update');
     }
 }
 

@@ -140,3 +140,6 @@
 .errorToast {
   background-color: red !important;
 }
+.warningToast {
+  background-color: blue !important;
+}
