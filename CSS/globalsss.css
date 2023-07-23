@@ -59,7 +59,6 @@
   font-size: 22px;
 }
 
-
 .error {
   color: red;
   display: none;
@@ -142,4 +141,84 @@
 }
 .warningToast {
   background-color: blue !important;
+}
+
+#confirmModal {
+  position: fixed;
+  inset: 0;
+  background-color: transparent;
+  height: 100vh;
+  width: 100%;
+  z-index: 1000000000000000000000000000000000000000000000000000000000000000000000000;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: none;
+}
+#confirmModalContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+}
+.actualCardConfirm {
+  height: 180px;
+  width: 350px;
+  background-color: rgb(228, 252, 255);
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 15px;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  box-shadow: 0 0px 2px 0px rgba(0, 0, 0, 0.438);
+}
+
+.headermodalCon {
+  display: flex;
+  gap: 10px;
+}
+#confirmModalButtons {
+  display: flex;
+  width: 100%;
+  gap: 50px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#confirmModalButtons button,
+#confirmModalButtons a {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+
+  padding: 6px 15px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  color: black;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  width: 50%;
+  text-align: center;
+  border-radius: 2px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+#confirmModalButtons button {
+  border-color: rgba(255, 0, 0, 0.7);
+}
+
+#confirmModalButtons a {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+#confirmModalButtons button:hover {
+  border-color: rgba(255, 0, 0, 1);
+  background-color: rgba(255, 0, 0, 1);
+}
+
+#confirmModalButtons a:hover {
+  border-color: rgba(255, 0, 0, 1);
+  background-color: rgba(255, 0, 0, 1);
 }

@@ -108,7 +108,7 @@ if (isset($_GET['search'])) {
     <title>Book Request</title>
     <link rel="stylesheet" href="./sidestyles.css">
     <link rel="stylesheet" href="./CSS/messagemodel.css">
-    <link rel="stylesheet" href="../CSS/global.css">
+    <link rel="stylesheet" href="../CSS/globalsss.css">
 
     <style>
         #action,
