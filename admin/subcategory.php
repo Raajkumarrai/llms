@@ -96,13 +96,13 @@ if (isset($_POST['addContent'])) {
     } else {
         header("Location: subcategory.php?error=Some error accuired");
     }
-    
+
 
 
     // to insert data into db
     $sql = "INSERT INTO `subcategory` (`subcatname`, `cname`, `cId`) VALUES ('$subCname', '$catName', '$cid')";
     if (mysqli_query($con, $sql)) {
-        header("Location: " . $_SERVER['PHP_SELF'].'?success=Subcategory Added Successfully');
+        header("Location: " . $_SERVER['PHP_SELF'] . '?success=Subcategory Added Successfully');
     } else {
         header("Location: subcategory.php?error=Some error accuired");
     }
@@ -115,9 +115,9 @@ if (isset($_GET['delete'])) {
     $sqlDel = "DELETE FROM `subcategory` WHERE `id`='$id'";
 
     if (mysqli_query($con, $sqlDel)) {
-        header("Location: " . $_SERVER['PHP_SELF']. '?success=Subcategory Deleted Successfully');
+        header("Location: " . $_SERVER['PHP_SELF'] . '?success=Subcategory Deleted Successfully');
     } else {
-        header("Location: " . $_SERVER['PHP_SELF']. '?error=Cannot Delete');
+        header("Location: " . $_SERVER['PHP_SELF'] . '?error=Cannot Delete');
     }
 }
 
@@ -154,9 +154,9 @@ if (isset($_POST['updateContent'])) {
 
     $sql = "UPDATE `subcategory` SET `cname`='$catName', `cid`='$cid', `subcatname`='$subCname' WHERE `id`='$id'";
     if (mysqli_query($con, $sql)) {
-        header("Location: " . $_SERVER['PHP_SELF'].'?success=Update success');
+        header("Location: " . $_SERVER['PHP_SELF'] . '?success=Update success');
     } else {
-        header("Location: " . $_SERVER['PHP_SELF'].'?error=Cannot update');
+        header("Location: " . $_SERVER['PHP_SELF'] . '?error=Cannot update');
     }
 }
 
@@ -219,7 +219,8 @@ if (isset($_GET['search'])) {
             cursor: pointer !important;
             font-size: 17px !important;
         }
-        input{
+
+        input {
             outline: none;
         }
     </style>
@@ -261,7 +262,7 @@ if (isset($_GET['search'])) {
                                 </a>
                             </td>
                             <td>
-                                <a href=\"./subcategory.php?delete=" . $row["id"] . "\">
+                                <a onclick='deleteBtnClk(" . $row["id"] . ")'>
                                     <svg width='16' height='16' viewBox='0 0 20 23' xmlns='http://www.w3.org/2000/svg'>
                                         <path d='M6.25 0V1.25H0V3.75H1.25V20C1.25 20.663 1.51339 21.2989 1.98223 21.7678C2.45107 22.2366 3.08696 22.5 3.75 22.5H16.25C16.913 22.5 17.5489 22.2366 18.0178 21.7678C18.4866 21.2989 18.75 20.663 18.75 20V3.75H20V1.25H13.75V0H6.25ZM6.25 6.25H8.75V17.5H6.25V6.25ZM11.25 6.25H13.75V17.5H11.25V6.25Z' />
                                     </svg>
@@ -359,7 +360,7 @@ if (isset($_GET['search'])) {
             modal.style.display = "none";
             window.location.href = urlWithoutParams;
         })
-        
+
         const fullcontainerToast = document.querySelectorAll(".fullcontainerToast");
         setTimeout(() => {
             for (let i = 0; i < fullcontainerToast.length; i++) {
@@ -384,6 +385,27 @@ if (isset($_GET['search'])) {
             history.replaceState({}, document.title, window.location.pathname);
         }
         document.body.style.overflowX = "hidden";
+
+
+        // Function to cancel the deletion and hide the confirmation modal
+        function cancelDelete() {
+            const confirmModal = document.getElementById('confirmModal');
+            confirmModal.style.display = 'none';
+            window.location.reload()
+        }
+
+        const deleteBtnClk = (id) => {
+            // console.log(id)
+            const confirmModal = document.getElementById("confirmModal")
+            const deleteLink = document.getElementById("deleteLink")
+            confirmModal.style.display = "block"
+            deleteLink.setAttribute("href", `./subcategory.php?delete=${id}`)
+        }
+        document.addEventListener("click", (elm) => {
+            if (elm.target.id === "confirmModalContent") {
+                cancelDelete();
+            }
+        });
     </script>
 </body>
 

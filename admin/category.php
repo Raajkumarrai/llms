@@ -395,7 +395,7 @@ if (isset($_GET['search'])) {
             if(elm.target.id === "confirmModalContent"){
                 cancelDelete();
             }
-        })
+        });
     </script>
 </body>
 
