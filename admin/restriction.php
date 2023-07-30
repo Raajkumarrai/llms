@@ -1,4 +1,67 @@
 <?php
+if (isset($_GET['error'])) {
+    echo '<div class="fullcontainerToast">
+    <div class="toastifier">
+        <div class="toastifierContent errorToast ">
+        <div class="cross" onclick="crossClk()">X</div>
+
+        <div class="innercontent">
+            <!-- <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z"
+            />
+            </svg> -->
+
+            <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                d="M10 0C15.53 0 20 4.47 20 10C20 15.53 15.53 20 10 20C4.47 20 0 15.53 0 10C0 4.47 4.47 0 10 0ZM13.59 5L10 8.59L6.41 5L5 6.41L8.59 10L5 13.59L6.41 15L10 11.41L13.59 15L15 13.59L11.41 10L15 6.41L13.59 5Z"
+            />
+            </svg>
+
+            <span> ' . $_GET['error'] . '</span>
+        </div>
+            </div>
+        </div>
+    </div>';
+}
+if (isset($_GET['success'])) {
+    echo '<div class="fullcontainerToast">
+    <div class="toastifier">
+        <div class="toastifierContent successToast ">
+        <div class="cross" onclick="crossClk()">X</div>
+
+        <div class="innercontent">
+            <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z"
+            />
+            </svg>
+            <span> ' . $_GET['success'] . '</span>
+        </div>
+            </div>
+        </div>
+    </div>';
+}
+
+
+
+
+
 include "../common/backendConnector.php";
 
 // db connection in (lms) db
@@ -14,9 +77,10 @@ if (isset($_GET['delete'])) {
     $sqlDel = "DELETE FROM `users` WHERE `id`='$id'";
 
     if (mysqli_query($con, $sqlDel)) {
-        header("Location: " . $_SERVER['PHP_SELF']);
+        header("Location: " . $_SERVER['PHP_SELF'] . '?success=Delete Success');
+        exit();
     } else {
-        echo "Cannot Delete";
+        header("Location: " . $_SERVER['PHP_SELF'] . '?error=Delete Failed');
     }
 }
 if (isset($_GET['unblock'])) {
@@ -24,7 +88,10 @@ if (isset($_GET['unblock'])) {
     $sqlDel = "UPDATE `users` SET `restriction`='0' WHERE `id`='$id'";
     $res = mysqli_query($con, $sqlDel);
     if ($res) {
-        header("Location: " . $_SERVER['PHP_SELF']);
+        header("Location: " . $_SERVER['PHP_SELF']) . '?success=Unblock Success';
+    } else {
+        header("Location: " . $_SERVER['PHP_SELF'] . '?error=Unblock Failed');
+
     }
 }
 
@@ -128,7 +195,7 @@ if (isset($_GET['search'])) {
                     </a>
                             </td>
                             <td style='max-width: 50px;'>
-                            <a href=\"./members.php?delete=" . $row["id"] . "\">
+                            <a onclick='deleteBtnClk(" . $row["id"] . ")'>
                                     <svg width='14' height='16' viewBox='0 0 20 23' xmlns='http://www.w3.org/2000/svg'>
                                         <path d='M6.25 0V1.25H0V3.75H1.25V20C1.25 20.663 1.51339 21.2989 1.98223 21.7678C2.45107 22.2366 3.08696 22.5 3.75 22.5H16.25C16.913 22.5 17.5489 22.2366 18.0178 21.7678C18.4866 21.2989 18.75 20.663 18.75 20V3.75H20V1.25H13.75V0H6.25ZM6.25 6.25H8.75V17.5H6.25V6.25ZM11.25 6.25H13.75V17.5H11.25V6.25Z' />
                                     </svg>
@@ -163,6 +230,59 @@ if (isset($_GET['search'])) {
             </div>
         </div>
     </div>
+
+    <script>
+
+
+const fullcontainerToast = document.querySelectorAll(".fullcontainerToast");
+        setTimeout(() => {
+            for (let i = 0; i < fullcontainerToast.length; i++) {
+                fullcontainerToast[i].style.right = "0px";
+                document.body.style.overflow = "hidden";
+            }
+        }, 200);
+        setInterval(() => {
+            closeModal(); // Call the closeModal function
+        }, 2000);
+        const crossClk = () => {
+            closeModal(); // Call the closeModal function
+        };
+
+        const closeModal = () => {
+            for (let i = 0; i < fullcontainerToast.length; i++) {
+                fullcontainerToast[i].style.right = "-700px";
+                window.location.reload();
+            }
+        };
+        if (window.location.search.includes('error') || window.location.search.includes('success') || window.location.search.includes('warning')) {
+            history.replaceState({}, document.title, window.location.pathname);
+        }
+        document.body.style.overflowX = "hidden";
+
+
+
+
+
+        // Function to cancel the deletion and hide the confirmation modal
+        function cancelDelete() {
+            const confirmModal = document.getElementById('confirmModal');
+            confirmModal.style.display = 'none';
+            window.location.reload()
+        }
+
+        const deleteBtnClk = (id) => {
+            // console.log(id)
+            const confirmModal = document.getElementById("confirmModal")
+            const deleteLink = document.getElementById("deleteLink")
+            confirmModal.style.display = "block"
+            deleteLink.setAttribute("href", `./category.php?delete=${id}`)
+        }
+        document.addEventListener("click", (elm) => {
+            if (elm.target.id === "confirmModalContent") {
+                cancelDelete();
+            }
+        });
+    </script>
 </body>
 
 </html>

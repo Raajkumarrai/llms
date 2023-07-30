@@ -1,4 +1,65 @@
 <?php
+if (isset($_GET['error'])) {
+    echo '<div class="fullcontainerToast">
+    <div class="toastifier">
+        <div class="toastifierContent errorToast ">
+        <div class="cross" onclick="crossClk()">X</div>
+
+        <div class="innercontent">
+            <!-- <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z"
+            />
+            </svg> -->
+
+            <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                d="M10 0C15.53 0 20 4.47 20 10C20 15.53 15.53 20 10 20C4.47 20 0 15.53 0 10C0 4.47 4.47 0 10 0ZM13.59 5L10 8.59L6.41 5L5 6.41L8.59 10L5 13.59L6.41 15L10 11.41L13.59 15L15 13.59L11.41 10L15 6.41L13.59 5Z"
+            />
+            </svg>
+
+            <span> ' . $_GET['error'] . '</span>
+        </div>
+            </div>
+        </div>
+    </div>';
+}
+if (isset($_GET['success'])) {
+    echo '<div class="fullcontainerToast">
+    <div class="toastifier">
+        <div class="toastifierContent successToast ">
+        <div class="cross" onclick="crossClk()">X</div>
+
+        <div class="innercontent">
+            <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z"
+            />
+            </svg>
+            <span> ' . $_GET['success'] . '</span>
+        </div>
+            </div>
+        </div>
+    </div>';
+}
+
+
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start(); // Start the session
 }
@@ -68,7 +129,9 @@ if (isset($_POST['preorder'])) {
         $resisExist = mysqli_query($con, $isExist);
 
         if (mysqli_num_rows($resisExist) > 0) {
-            die("You already Request");
+            // die("You already Request");
+            header("Location: " . $_SERVER['PHP_SELF'] . '?error=You Have Already Request.');
+            exit();
         }
 
         $bookQuery = "SELECT * FROM books WHERE id = $bookid";
@@ -77,7 +140,9 @@ if (isset($_POST['preorder'])) {
         // Check if the query executed successfully
         if ($resBook) {
             if (mysqli_num_rows($resBook) < 1) {
-                die("Book not found");
+                // die("Book not found");
+                header("Location: " . $_SERVER['PHP_SELF'] . '?error=Book not found.');
+                exit();
             }
 
             $rowBook = mysqli_fetch_assoc($resBook);
@@ -92,7 +157,7 @@ if (isset($_POST['preorder'])) {
                 $resBook = mysqli_query($con, $sqlBook);
 
                 if ($resBook) {
-                    header("Location: " . $_SERVER['PHP_SELF']);
+                    header("Location: " . $_SERVER['PHP_SELF']. '?success=Book Successfully Ordered.');
                     exit();
                 }
             } else {
@@ -106,7 +171,9 @@ if (isset($_POST['preorder'])) {
             exit();
         }
     } else {
-        echo "You cannot order please wait.";
+        // echo "You cannot order please wait.";
+        header("Location: " . $_SERVER['PHP_SELF'] . '?error=You cannot order please wait.');
+        exit();
     }
 }
 
@@ -243,7 +310,7 @@ if (isset($_POST['preorder'])) {
                     <div class='pre-order-btn'>
                         <form action='./index.php' method='post'>
                             <input type='hidden' name='book_id' value=" . $row['id'] . " />
-                            <button name='preorder' class='preorderBtn_sty'>Pre-Order</button>
+                            <button name='preorder' class='preorderBtn_sty' onclick='preOrder()'>Pre-Order</button>
                         </form>
                     </div>
                 </div>
@@ -259,6 +326,34 @@ if (isset($_POST['preorder'])) {
         <?php include "./common/footer.php"; ?>
 
     </div>
+
+    <script>
+         const fullcontainerToast = document.querySelectorAll(".fullcontainerToast");
+        setTimeout(() => {
+            for (let i = 0; i < fullcontainerToast.length; i++) {
+                fullcontainerToast[i].style.right = "0px";
+                document.body.style.overflow = "hidden";
+            }
+        }, 200);
+        setInterval(() => {
+            closeModal(); // Call the closeModal function
+        }, 2000);
+        const crossClk = () => {
+            closeModal(); // Call the closeModal function
+        };
+
+        const closeModal = () => {
+            for (let i = 0; i < fullcontainerToast.length; i++) {
+                fullcontainerToast[i].style.right = "-700px";
+                window.location.reload();
+            }
+        };
+        if (window.location.search.includes('error') || window.location.search.includes('success') || window.location.search.includes('warning')) {
+            history.replaceState({}, document.title, window.location.pathname);
+        }
+        document.body.style.overflowX = "hidden";
+
+    </script>
 
 </body>
 
