@@ -189,6 +189,7 @@ if (isset($_POST['preorder'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/homes.css">
+    <link rel="stylesheet" href="./CSS/globalsss.css">
     <title>LMS Home</title>
 </head>
 
@@ -328,7 +329,7 @@ if (isset($_POST['preorder'])) {
     </div>
 
     <script>
-         const fullcontainerToast = document.querySelectorAll(".fullcontainerToast");
+        const fullcontainerToast = document.querySelectorAll(".fullcontainerToast");
         setTimeout(() => {
             for (let i = 0; i < fullcontainerToast.length; i++) {
                 fullcontainerToast[i].style.right = "0px";
@@ -352,6 +353,8 @@ if (isset($_POST['preorder'])) {
             history.replaceState({}, document.title, window.location.pathname);
         }
         document.body.style.overflowX = "hidden";
+
+
 
     </script>
 

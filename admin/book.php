@@ -379,7 +379,9 @@ if (isset($_POST['updateContent'])) {
         }
 
         // Update data in the books table without changing the image
-        $updatesql = "UPDATE `books` SET `bname`='$newBname', `bauthor`='$newBauthor', `pubName`='$newPubName', `bquantity`='$newBquantity', `categoryid`='$newCategoryId', `subcategoryid`='$newSubcategoryId', `bpublishdate`='$newBpublishdate', `categoryName`='$newCatName', `subcategoryName`='$newSubcatName' WHERE `id`='$editId'";
+        $updatesql = "UPDATE `books` SET `bname`='$newBname',
+         `bauthor`='$newBauthor', `pubName`='$newPubName', `bquantity`='$newBquantity', `categoryid`='$newCategoryId', `subcategoryid`='$newSubcategoryId', `bpublishdate`='$newBpublishdate', `categoryName`='$newCatName', `subcategoryName`='$newSubcatName' 
+         WHERE `id`='$editId'";
         $resUpdate = mysqli_query($con, $updatesql);
 
         if ($resUpdate) {
