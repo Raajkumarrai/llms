@@ -121,7 +121,7 @@ if (isset($_POST['loginSubmit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LMS-Login</title>
     <link rel="stylesheet" href="../CSS/logins.css" />
-    <link rel="stylesheet" href="../CSS/globalss.css">
+    <link rel="stylesheet" href="../CSS/globalssss.css">
 </head>
 
 <body>

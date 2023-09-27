@@ -151,7 +151,7 @@ if (isset($_GET['search'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Message</title>
     <link rel="stylesheet" href="./sidestyles.css">
-    <link rel="stylesheet" href="../CSS/globalss.css">
+    <link rel="stylesheet" href="../CSS/globalssss.css">
     <link rel="stylesheet" href="./CSS/messagemodel.css">
 </head>
 
