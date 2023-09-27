@@ -1,0 +1,235 @@
+#content {
+  position: absolute;
+  top: 10vh;
+  right: 0;
+  bottom: 0;
+  left: 120px;
+}
+#snav,
+#topMain {
+  z-index: 1111111111;
+}
+#semicontent {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* for pagintion  */
+.pagination {
+  display: inline-block;
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+}
+
+.pagination a {
+  color: rgb(0, 0, 0);
+  float: left;
+  height: 35px;
+  width: 35px;
+  display: grid;
+  place-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  border: 1px solid rgb(44, 44, 95);
+  margin: 0 4px;
+}
+
+.pagination a.activePage {
+  background-color: rgb(151, 151, 224);
+  color: var(--bg-white);
+  border: 1px solid blue !important;
+}
+
+.pagination a:hover:not(.activePage) {
+  background-color: white !important;
+  color: black;
+}
+.rightArrow {
+  padding-bottom: 5px;
+  padding-left: 2px;
+  font-size: 22px;
+}
+.leftArrow {
+  padding-bottom: 5px;
+  padding-right: 2px;
+  font-size: 22px;
+}
+
+.error {
+  color: red;
+  display: none;
+  width: 100%;
+  /* margin-top: -8px;
+  margin-bottom: -8px; */
+  margin-left: 10px;
+  letter-spacing: 1px;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.regErr {
+  margin-top: -4px;
+  margin-bottom: -4px;
+}
+.fullcontainerToast {
+  width: 100%;
+  max-width: 1600px;
+  max-height: 60px;
+  position: absolute;
+  inset: 0;
+  margin: 0 auto;
+  overflow-x: hidden;
+  transition: 0.2s;
+  right: -700px;
+  z-index: 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
+}
+.toastifier {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: 0.2s;
+  z-index: 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
+}
+.toastifierContent {
+  max-width: 500px;
+  position: absolute;
+  padding: 15px 30px;
+  margin: 10px;
+  border-radius: 2px;
+  right: 0;
+  transition: 0.2s;
+  overflow: hidden;
+  box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.1);
+}
+.innercontent {
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: -10px;
+  font-size: 15px;
+  padding-right: 20px;
+}
+.innercontent svg {
+  fill: rgba(255, 255, 255, 0.9);
+}
+.innercontent span {
+  text-transform: capitalize !important;
+}
+.cross {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  color: rgba(255, 255, 255, 0.9);
+}
+.successToast {
+  background-color: green !important;
+}
+.errorToast {
+  background-color: red !important;
+}
+.warningToast {
+  background-color: blue !important;
+}
+
+#confirmModal {
+  position: fixed;
+  inset: 0;
+  background-color: transparent;
+  height: 100vh;
+  width: 100%;
+  z-index: 1000000000000000000000000000000000000000000000000000000000000000000000000;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: none;
+}
+#confirmModalContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+}
+.actualCardConfirm {
+  height: 180px;
+  width: 350px;
+  background-color: rgb(228, 252, 255);
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 15px;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  box-shadow: 0 0px 2px 0px rgba(0, 0, 0, 0.438);
+}
+
+.headermodalCon {
+  display: flex;
+  gap: 10px;
+}
+#confirmModalButtons {
+  display: flex;
+  width: 100%;
+  gap: 50px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#confirmModalButtons button,
+#confirmModalButtons a {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+
+  padding: 6px 15px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  color: black;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  width: 50%;
+  text-align: center;
+  border-radius: 2px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+#confirmModalButtons button {
+  border-color: rgba(255, 0, 0, 0.7);
+}
+
+#confirmModalButtons a {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+#confirmModalButtons button:hover {
+  border-color: rgba(255, 0, 0, 1);
+  background-color: rgba(255, 0, 0, 1);
+}
+
+#confirmModalButtons a:hover {
+  border-color: rgba(255, 0, 0, 1);
+  background-color: rgba(255, 0, 0, 1);
+}
+.book-img{
+  background-color: white !important;
+  min-height: 220px;
+  max-height: 250px;
+  width: 100%;
+  min-width: 100px;
+  max-width: 150px;
+}
+.contentTable{
+  overflow: auto !important;
+}

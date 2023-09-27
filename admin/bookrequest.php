@@ -22,7 +22,8 @@ if (isset($_GET['taken'])) {
 if (isset($_GET['return']) && $_GET['bookid']) {
     $id = $_GET['return'];
     $bookid = $_GET['bookid'];
-    $sqlDel = "UPDATE `bookorder` SET `isreturn`='1' WHERE `id`='$id'";
+    // $sqlDel = "UPDATE `bookorder` SET `isreturn`='1' WHERE `id`='$id'";
+    $sqlDel = "DELETE FROM `bookorder` WHERE `id` = '$id'";
 
     if (mysqli_query($con, $sqlDel)) {
         $bookQuery = "SELECT bquantity FROM books WHERE id = '$bookid'";
@@ -108,7 +109,7 @@ if (isset($_GET['search'])) {
     <title>Book Request</title>
     <link rel="stylesheet" href="./sidestyles.css">
     <link rel="stylesheet" href="./CSS/messagemodel.css">
-    <link rel="stylesheet" href="../CSS/globalsa.css">
+    <link rel="stylesheet" href="../CSS/globalss.css">
 
     <style>
         #action,

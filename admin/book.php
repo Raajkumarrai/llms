@@ -398,23 +398,23 @@ if (isset($_GET['edit'])) {
 // }
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Your code for handling the POST request goes here
-    if ($_POST['bquantity']) {
-        $editId = $_POST['editId'];
-        $bookqn = $_POST['bquantity'];
-        $sql = "UPDATE books SET bquantity='$bookqn' WHERE id='$editId'";
-        $res = mysqli_query($con, $sql);
-    }
-}
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if ($_POST['bpublishdate']) {
-        $editId = $_POST['editId'];
-        $bpubdate = $_POST['bpublishdate'];
-        $sql = "UPDATE books SET bpublishdate='$bpubdate' WHERE id='$editId'";
-        $res = mysqli_query($con, $sql);
-    }
-}
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//     // Your code for handling the POST request goes here
+//     if ($_POST['bquantity']) {
+//         $editId = $_POST['editId'];
+//         $bookqn = $_POST['bquantity'];
+//         $sql = "UPDATE books SET bquantity='$bookqn' WHERE id='$editId'";
+//         $res = mysqli_query($con, $sql);
+//     }
+// }
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//     if ($_POST['bpublishdate']) {
+//         $editId = $_POST['editId'];
+//         $bpubdate = $_POST['bpublishdate'];
+//         $sql = "UPDATE books SET bpublishdate='$bpubdate' WHERE id='$editId'";
+//         $res = mysqli_query($con, $sql);
+//     }
+// }
 
 function uploadImage($targetDir)
 {
@@ -457,14 +457,15 @@ function updateBook($con, $editId, $imagePath)
     $newSubcatName = getSubcategoryName($con, $newSubcategoryId);
 
     // Check for duplicate records
-    if (!isDuplicateRecord($con, $newCatName, $newSubcatName, $newBname, $newPubName)) {
+    // if (!isDuplicateRecord($con, $newCatName, $newSubcatName, $newBname, $newPubName)) {
         // Check if a new image was uploaded
         if ($imagePath) {
+            $newImgLink = 'http://localhost/lms/admin/'.$imagePath;
             $updatesql = "UPDATE `books` SET `bname`='$newBname',
                 `bauthor`='$newBauthor', `pubName`='$newPubName', `bquantity`='$newBquantity',
                 `categoryid`='$newCategoryId', `subcategoryid`='$newSubcategoryId',
                 `bpublishdate`='$newBpublishdate', `categoryName`='$newCatName',
-                `subcategoryName`='$newSubcatName', `bimage`='$imagePath'
+                `subcategoryName`='$newSubcatName', `bimage`='$newImgLink'
                 WHERE `id`='$editId'";
         } else {
             // No new image uploaded, retain the old image URL
@@ -482,10 +483,10 @@ function updateBook($con, $editId, $imagePath)
         } else {
             throw new Exception("Error updating data: " . mysqli_error($con));
         }
-    } else {
-        header("Location: book.php"); // Duplicate record found, redirect
-        exit;
-    }
+    // } else {
+    //     header("Location: book.php"); // Duplicate record found, redirect
+    //     exit;
+    // }
 }
 
 
@@ -530,14 +531,9 @@ if (isset($_POST['updateContent'])) {
         mkdir($targetDir, 0777, true);
     }
 
-    try {
-        $imagePath = uploadImage($targetDir);
-        $editId = $_POST['editId'];
-        updateBook($con, $editId, $imagePath);
-    } catch (Exception $e) {
-        header("Location: " . $_SERVER['PHP_SELF'] . '?error=' . urlencode($e->getMessage()));
-        exit;
-    }
+    $imagePath = uploadImage($targetDir);
+    $editId = $_POST['editId'];
+    updateBook($con, $editId, $imagePath);
 }
 
 
@@ -594,7 +590,7 @@ if (isset($_GET['search'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Books</title>
     <link rel="stylesheet" href="./sidestyles.css">
-    <link rel="stylesheet" href="../CSS/globalsa.css">
+    <link rel="stylesheet" href="../CSS/globalss.css">
     <link rel="stylesheet" href="./CSS/model.css">
     <link rel="stylesheet" href="./CSS/books.css">
     <style>

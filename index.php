@@ -189,7 +189,7 @@ if (isset($_POST['preorder'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/homes.css">
-    <link rel="stylesheet" href="./CSS/globalsa.css">
+    <link rel="stylesheet" href="./CSS/globalss.css">
     <title>LMS Home</title>
 </head>
 
@@ -337,13 +337,13 @@ if (isset($_POST['preorder'])) {
             }
         }, 200);
         setInterval(() => {
-            closeModal(); // Call the closeModal function
+            closeModaltoster(); // Call the closeModaltoster function
         }, 2000);
         const crossClk = () => {
-            closeModal(); // Call the closeModal function
+            closeModaltoster(); // Call the closeModaltoster function
         };
 
-        const closeModal = () => {
+        const closeModaltoster = () => {
             for (let i = 0; i < fullcontainerToast.length; i++) {
                 fullcontainerToast[i].style.right = "-700px";
                 window.location.reload();
@@ -361,3 +361,4 @@ if (isset($_POST['preorder'])) {
 </body>
 
 </html>
+
