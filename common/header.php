@@ -18,7 +18,7 @@ $id = $_SESSION['id'];
 $name = $_SESSION['name'];
 $email = $_SESSION['email'];
 
-$sqlFetch = "SELECT * FROM bookorder WHERE userid = $id";
+$sqlFetch = "SELECT * FROM bookorder WHERE userid = $id AND isreturn=0";
 $resFetch = mysqli_query($con, $sqlFetch);
 
 ?>
