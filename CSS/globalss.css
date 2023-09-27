@@ -222,7 +222,7 @@
   border-color: rgba(255, 0, 0, 1);
   background-color: rgba(255, 0, 0, 1);
 }
-.book-img{
+.book-img {
   background-color: white !important;
   min-height: 220px;
   max-height: 250px;
@@ -230,6 +230,16 @@
   min-width: 100px;
   max-width: 150px;
 }
-.contentTable{
+.contentTable {
   overflow: auto !important;
+}
+
+.activesidebar {
+  border-radius: 3px !important;
+  background-color: rgba(88, 204, 251, 1) !important;
+  border-radius: 5px !important;
+  transition: 0.5s !important;
+}
+.activesidebar svg {
+  fill: black !important;
 }
