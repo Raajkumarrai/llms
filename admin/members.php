@@ -142,7 +142,7 @@ if (isset($_GET['search'])) {
     <title>Members</title>
     <link rel="stylesheet" href="./sidestyles.css">
     <link rel="stylesheet" href="./CSS/messagemodel.css">
-    <link rel="stylesheet" href="../CSS/globalsss.css">
+    <link rel="stylesheet" href="../CSS/globalsa.css">
 
     <style>
         #action,
@@ -228,6 +228,24 @@ if (isset($_GET['search'])) {
             </div>
         </div>
     </div>
+    <div id="confirmModal">
+        <div id="confirmModalContent">
+            <div class="actualCardConfirm">
+                <div class="headermodalCon">
+                    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M8.9443 12.9809L10.944 13.0181L10.9067 15.0178L8.90705 14.9805M9.09332 4.98225L11.093 5.01951L10.9812 11.0185L8.98156 10.9812M9.81375 19.9983C11.1267 20.0227 12.4317 19.7883 13.6541 19.3085C14.8765 18.8286 15.9924 18.1127 16.9381 17.2016C18.8481 15.3615 19.9489 12.838 19.9983 10.1863C20.0477 7.53457 19.0417 4.97185 17.2016 3.06188C16.2904 2.11616 15.202 1.35916 13.9983 0.834098C12.7946 0.30904 11.4993 0.0262068 10.1863 0.00174628C7.53457 -0.0476539 4.97185 0.958355 3.06188 2.79846C1.15191 4.63857 0.0511458 7.16204 0.0017456 9.81375C-0.0227149 11.1267 0.211676 12.4317 0.691537 13.6541C1.1714 14.8765 1.88733 15.9924 2.79846 16.9381C3.70959 17.8839 4.79807 18.6409 6.00175 19.1659C7.20544 19.691 8.50076 19.9738 9.81375 19.9983Z" />
+                    </svg>
+                    <h3>Confirmation</h3>
+                </div>
+                <p>Are you sure you want to delete this content?</p>
+                <div id="confirmModalButtons">
+                    <button onclick="cancelDelete()">Cancel</button>
+                    <a id="deleteLink" href="#">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
          const fullcontainerToast = document.querySelectorAll(".fullcontainerToast");
@@ -270,7 +288,7 @@ if (isset($_GET['search'])) {
             const confirmModal =document.getElementById("confirmModal")
             const deleteLink =document.getElementById("deleteLink")
             confirmModal.style.display = "block"
-            deleteLink.setAttribute("href", `./category.php?delete=${id}`)
+            deleteLink.setAttribute("href", `./members.php?delete=${id}`)
         }
         document.addEventListener("click", (elm)=>{
             if(elm.target.id === "confirmModalContent"){

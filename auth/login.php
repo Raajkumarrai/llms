@@ -81,6 +81,9 @@ if (isset($_POST['loginSubmit'])) {
     $res = mysqli_query($con, $sql);
     if (mysqli_num_rows($res) > 0) {
         $row = mysqli_fetch_assoc($res);
+        if($row['restriction']==1){
+            header("Location: " . $_SERVER['PHP_SELF'] . '?error=You are restricted.');
+        }
         if (
             password_verify(
                 $password,
@@ -97,31 +100,10 @@ if (isset($_POST['loginSubmit'])) {
             } else {
                 header("Location: /lms/admin/dashboard.php");
             }
-        } else {
-    //         echo "<div class='showNotificaion error' id='showNotification'>
-    //     <div class='notificationshow'>
-    //         <div class='name'>
-    //             Error:
-    //         </div>
-    //         <div class='message'>
-    //             Invalid credential
-    //         </div>
-    //     </div>
-    // </div>";
             header("Location: " . $_SERVER['PHP_SELF'] . '?error=Invalid Credential.');
             exit();
         }
     } else {
-    //     echo "<div class='showNotificaion error' id='showNotification'>
-    //     <div class='notificationshow'>
-    //         <div class='name'>
-    //             Error:
-    //         </div>
-    //         <div class='message'>
-    //             Invalid credential
-    //         </div>
-    //     </div>
-    // </div>";
     header("Location: " . $_SERVER['PHP_SELF'] . '?error=Invalid Credential.');
         exit();
     }
@@ -137,7 +119,7 @@ if (isset($_POST['loginSubmit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LMS-Login</title>
     <link rel="stylesheet" href="../CSS/logins.css" />
-    <link rel="stylesheet" href="../CSS/globalsss.css">
+    <link rel="stylesheet" href="../CSS/globalsa.css">
 </head>
 
 <body>

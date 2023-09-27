@@ -145,7 +145,7 @@ if (isset($_GET['search'])) {
     <title>Members</title>
     <link rel="stylesheet" href="./sidestyles.css">
     <link rel="stylesheet" href="./CSS/messagemodel.css">
-    <link rel="stylesheet" href="../CSS/globalsss.css">
+    <link rel="stylesheet" href="../CSS/globalsa.css">
 
     <style>
         #action,
