@@ -225,7 +225,7 @@ $adminMessage = $urlParts[count($urlParts) - 2] . '/' . $urlParts[count($urlPart
 
 
                 <li class="<?php echo $adminMessage == 'admin/restriction.php' ? 'activesidebar' : '' ?>">
-                    <a href="restriction.php"><svg width="32" height="32" viewBox="0 0 32 32"
+                    <a class="scale-125" href="restriction.php"><svg width="32" height="32" viewBox="0 0 32 32"
                             xmlns="http://www.w3.org/2000/svg" style=" margin-left: 5px;">
                             <path
                                 d="M18.6667 13.3333H4V16H18.6667V13.3333ZM18.6667 8H4V10.6667H18.6667V8ZM4 21.3333H13.3333V18.6667H4V21.3333ZM19.2 29.3333L22.6667 25.8667L26.1333 29.3333L28 27.4667L24.5333 24L28 20.5333L26.1333 18.6667L22.6667 22.1333L19.2 18.6667L17.3333 20.5333L20.8 24L17.3333 27.4667L19.2 29.3333Z" />

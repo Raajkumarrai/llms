@@ -590,7 +590,7 @@ if (isset($_GET['search'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Books</title>
     <link rel="stylesheet" href="./sidestyles.css">
-    <link rel="stylesheet" href="../CSS/globalssss.css">
+    <link rel="stylesheet" href="../CSS/global.css">
     <link rel="stylesheet" href="./CSS/model.css">
     <link rel="stylesheet" href="./CSS/books.css">
     <style>
