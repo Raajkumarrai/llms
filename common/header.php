@@ -298,12 +298,17 @@ $resFetch = mysqli_query($con, $sqlFetch);
                         <div class="activeTracker"></div>
                         ' : '' ?>
                     </li>
-                    <li>
-                        <a href="<?php echo $aboutUsURL; ?>">About Us</a>
-                        <?php echo isActive($currentURL, $aboutUsURL) ? '
-                        <div class="activeTracker"></div>
-                        ' : '' ?>
-                    </li>
+
+
+
+                    <!-- <li> -->
+                        <!-- <a href="<?php echo $aboutUsURL; ?>">About Us</a> -->
+                        <!-- <?php echo isActive($currentURL, $aboutUsURL) ? ' -->
+                        // <div class="activeTracker"></div>
+                        // ' : '' ?>
+                    <!-- </li> -->
+
+                    
 
                     <li id="userIcon"><svg onclick="showContent()" width="45" height="45" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg">
                             <path d="M22.5 7.5C24.4891 7.5 26.3968 8.29018 27.8033 9.6967C29.2098 11.1032 30 13.0109 30 15C30 16.9891 29.2098 18.8968 27.8033 20.3033C26.3968 21.7098 24.4891 22.5 22.5 22.5C20.5109 22.5 18.6032 21.7098 17.1967 20.3033C15.7902 18.8968 15 16.9891 15 15C15 13.0109 15.7902 11.1032 17.1967 9.6967C18.6032 8.29018 20.5109 7.5 22.5 7.5ZM22.5 26.25C30.7875 26.25 37.5 29.6062 37.5 33.75V37.5H7.5V33.75C7.5 29.6062 14.2125 26.25 22.5 26.25Z"></path>

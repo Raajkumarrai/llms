@@ -58,132 +58,144 @@ if (isset($_GET['success'])) {
     </div>';
 }
 
-$categoryName = "";
 
-if (isset($_GET['category'])) {
-    $categoryName = $_GET['category'];
-}
 
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start(); // Start the session
 }
 include "./common/backendConnector.php";
-
 // db connection in (lms) db
 $con = mysqli_connect($host, $dbUserName, $dbPassword, $database);
 if (!$con) {
     die("DB connection failed");
 }
 
-// for get Book content from db
-$sqlFetchAll = "SELECT * FROM `books` ";
+// Fetch all books
+$sqlFetchAll = "SELECT * FROM `books`";
 $res = mysqli_query($con, $sqlFetchAll);
 
-$sqlcategory = "SELECT * FROM `category`";
-$rescategory = mysqli_query($con, $sqlcategory);
-
+// Search functionality
 if (isset($_GET['search'])) {
-    $search = isset($_GET['search']) ? $_GET['search'] : '';
-    // Escape the search value to prevent SQL injection
-    $search = mysqli_real_escape_string($con, $search);
+    $search = mysqli_real_escape_string($con, $_GET['search']);
 
-    // Check if the search value is set
     if (!empty($search)) {
-        // Query with the search value
-        $sqlFetch = "SELECT * FROM books WHERE bname LIKE '%$search%' OR bauthor LIKE '%$search%'";
-        $res = mysqli_query($con, $sqlFetch);
-    }
-}
-
-// for searching
-// Retrieve the search value from the GET request]
-if (isset($_GET['search'])) {
-    $search = isset($_GET['search']) ? $_GET['search'] : '';
-
-    // Escape the search value to prevent SQL injection
-    $search = mysqli_real_escape_string($con, $search);
-
-    // Check if the search value is set
-    if (!empty($search)) {
-        // Query with the search value
         $sqlNote = "SELECT * FROM books WHERE bname LIKE '%$search%'";
         $res = mysqli_query($con, $sqlNote);
     }
 }
 
-if (isset($_GET['category'])) {
-    $cat = $_GET['category'];
-    if ($cat != 'all') {
-        $sqlFetchAll = "SELECT * FROM `books` where categoryName = '$cat'";
-        $res = mysqli_query($con, $sqlFetchAll);
-    }
-}
 if (isset($_POST['preorder'])) {
     $userId = $_SESSION['id'];
-    $OrderQueryPrev = "SELECT * FROM bookorder WHERE userid = $userId AND isreturn = 0";
-    $resOrderQueryPrev = mysqli_query($con, $OrderQueryPrev);
-    if (mysqli_num_rows($resOrderQueryPrev) < 6) {
-        $bookid = $_POST['book_id'];
-        $name = $_SESSION['name'];
-        $userid = $_SESSION['id'];
-        $isreturn = 0;
-        $istaken = 0;
+    $bookId = $_POST['book_id'];
 
-        $isExist = "SELECT * FROM bookorder WHERE userid = '$userid' AND bookid='$bookid' AND isreturn=0";
-        $resisExist = mysqli_query($con, $isExist);
+    // Check if the user has reached the maximum limit of book orders
+    $maxOrderLimit = 5;
+    $orderQueryPrev = "SELECT COUNT(*) as orderCount FROM bookorder WHERE userid = $userId AND isreturn = 0";
+    $resOrderQueryPrev = mysqli_query($con, $orderQueryPrev);
 
-        if (mysqli_num_rows($resisExist) > 0) {
-            // die("You already Request");
-            header("Location: " . $_SERVER['PHP_SELF'] . '?error=You Have Already Request.');
-            exit();
-        }
-
-        $bookQuery = "SELECT * FROM books WHERE id = $bookid";
-        $resBook = mysqli_query($con, $bookQuery);
-
-        // Check if the query executed successfully
-        if ($resBook) {
-            if (mysqli_num_rows($resBook) < 1) {
-                // die("Book not found");
-                header("Location: " . $_SERVER['PHP_SELF'] . '?error=Book not found.');
-                exit();
-            }
-
-            $rowBook = mysqli_fetch_assoc($resBook);
-
-            // Insert query
-            $sqlOrder = "INSERT INTO bookorder (`username`, `userid`, `bookid`, `isreturn`, `istaken`) VALUES ('$name', '$userid', '$bookid', '$isreturn', '$istaken')";
-            $resBook = mysqli_query($con, $sqlOrder);
-
-            if ($resBook) {
-                $newQuantity = intval($rowBook['bquantity']) - 1;
-                $sqlBook = "UPDATE books SET bquantity = '$newQuantity' WHERE id = '$bookid'";
-                $resBook = mysqli_query($con, $sqlBook);
-
-                if ($resBook) {
-                    header("Location: " . $_SERVER['PHP_SELF'] . '?success=Book Successfully Ordered.');
-                    exit();
-                }
-            } else {
-                // Handle insertion failure
-                echo "Record not inserted: " . mysqli_error($con);
-                exit();
-            }
-        } else {
-            // Handle query execution failure
-            echo "Query failed: " . mysqli_error($con);
-            exit();
-        }
-    } else {
-        // echo "You cannot order please wait.";
-        header("Location: " . $_SERVER['PHP_SELF'] . '?error=You cannot order please wait.');
+    if (!$resOrderQueryPrev) {
+        echo "Failed to fetch previous order count: " . mysqli_error($con);
         exit();
     }
+
+    $rowOrderCount = mysqli_fetch_assoc($resOrderQueryPrev);
+    $orderCount = $rowOrderCount['orderCount'];
+
+    if ($orderCount >= $maxOrderLimit) {
+        // echo "<div class='showNotificaion error' id='showNotification'>
+        //         <div class='notificationshow'>
+        //             <div class='name'>
+        //                 Error:
+        //             </div>
+        //             <div class='message'>
+        //                 You Can't Request More Than $maxOrderLimit Books
+        //             </div>
+        //         </div>
+        //     </div>";
+            header("Location: " . $_SERVER['PHP_SELF'] . '?error=You Cannot Request More Than $maxOrderLimit Books.');
+        exit();
+    }
+
+    // Check if the book has already been requested by the user
+    $isExistQuery = "SELECT * FROM bookorder WHERE userid = $userId AND bookid = $bookId AND isreturn = 0";
+    $resIsExist = mysqli_query($con, $isExistQuery);
+
+    if (!$resIsExist) {
+        echo "Failed to check book existence: " . mysqli_error($con);
+        exit();
+    }
+
+    if (mysqli_num_rows($resIsExist) > 0) {
+    //     echo "<div class='showNotificaion error' id='showNotifications' >
+    //     <div class='notificationshow' >
+    //         <div class='name' >
+    //             Error:
+    //         </div>
+    //         <div class='message'>
+    //             Book Already Requested
+    //         </div>
+    //     </div>
+    // </div>";
+    header("Location: " . $_SERVER['PHP_SELF'] . '?error=Book Already Requested.');
+
+        exit();
+    }
+
+    // Fetch book details
+    $bookQuery = "SELECT * FROM books WHERE id = $bookId";
+    $resBook = mysqli_query($con, $bookQuery);
+
+    if (!$resBook) {
+        echo "Failed to fetch book details: " . mysqli_error($con);
+        exit();
+    }
+
+    if (mysqli_num_rows($resBook) < 1) {
+        echo "Book not found";
+        exit();
+    }
+
+    $rowBook = mysqli_fetch_assoc($resBook);
+    $newQuantity = intval($rowBook['bquantity']) - 1;
+
+    // Start a transaction for the book order and book quantity update
+    mysqli_begin_transaction($con);
+
+    $name = mysqli_real_escape_string($con, $_SESSION['name']);
+    $isreturn = 0;
+    $istaken = 0;
+
+    // Insert the book order
+    $sqlOrder = "INSERT INTO bookorder (username, userid, bookid, isreturn, istaken) VALUES ('$name', $userId, $bookId, $isreturn, $istaken)";
+    $resOrder = mysqli_query($con, $sqlOrder);
+
+    if (!$resOrder) {
+        mysqli_rollback($con);
+        echo "Failed to insert book order: " . mysqli_error($con);
+        exit();
+    }
+
+    // Update the book quantity
+    $bookUpdateQuery = "UPDATE books SET bquantity = $newQuantity WHERE id = $bookId";
+    $resBookUpdate = mysqli_query($con, $bookUpdateQuery);
+
+    if (!$resBookUpdate) {
+        mysqli_rollback($con);
+        echo "Failed to update book quantity: " . mysqli_error($con);
+        exit();
+    }
+
+    // Commit the transaction
+    mysqli_commit($con);
+
+    // Redirect the user to the current page
+    header("Location: " . $_SERVER['PHP_SELF']. '?success=Success.');
+    exit();
 }
-
-
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -195,11 +207,9 @@ if (isset($_POST['preorder'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/homes.css">
     <link rel="stylesheet" href="./CSS/allBook.css">
-    <link rel="stylesheet" href="./CSS/global.css">
-    <title>LMS Home</title>
-</head>
-<style>
-     body{
+    <title>All Books</title>
+    <style>
+        body{
             max -width: 1600px;
             overflow-x: hidden;
         }
@@ -207,13 +217,61 @@ if (isset($_POST['preorder'])) {
             background-color: transparent;
             border: none;
         }
-</style>
+        
+        /* .error {
+    color: red;
+    width: 100%;
+    margin-top: -30px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+} */
+/* 
+.success {
+    background-color: rgb(0, 195, 0);
+}
+
+#showNotifications {
+    display: inline;
+    padding: 12px 20px;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    margin-top: 10px;
+    position: absolute;
+    right: 10px;
+    transition: 0.3s;
+    z-index: 10;
+    max-width: 1600px;
+    width: 200px;
+    background-color: black;
+} */
+
+/* .notificationshow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+} */
+
+/* .notificationshow .name {
+    font-weight: 600;
+    letter-spacing: 0;
+} */
+.toastifier{
+    z-index: 111111111111111111111111111;
+}
+
+    </style>
+</head>
+
 <body>
+
     <?php include "./common/header.php"; ?>
-    <!-- Main container  -->
+    <!-- main div of all books  -->
     <div class="container">
 
-    <div class="all-books-nav">
+        <div class="all-books-nav">
             <div class="all-books">
                 <h3>All Books:</h3>
             </div>
@@ -237,14 +295,12 @@ if (isset($_POST['preorder'])) {
 
 
         </div>
-        <div>
-
-        </div>
+        <!-- div for border bar HR -->
+        <hr>
 
         <!-- Books and books Details -->
         <div class="books-details">
             <?php
-
             if (mysqli_num_rows($res) > 0) {
                 while ($row = mysqli_fetch_assoc($res)) {
                     echo "
@@ -267,7 +323,7 @@ if (isset($_POST['preorder'])) {
                     <div class='pre-order-btn'>
                         <form action='./allBook.php' method='post'>
                             <input type='hidden' name='book_id' value=" . $row['id'] . " />
-                            <button name='preorder' class='preorderBtn_sty' onclick='preOrder()'>Pre-Order</button>
+                            <button name='preorder' class='preorderBtn_sty'>Pre-Order</button>
                         </form>
                     </div>
                 </div>
@@ -278,14 +334,14 @@ if (isset($_POST['preorder'])) {
             }
             ?>
         </div>
-    </div>
-
-
-        <?php include "./common/footer.php"; ?>
 
     </div>
 
+
+    <!-- footer section -->
+    <?php include "./common/footer.php"; ?>
     <script>
+        
         const fullcontainerToast = document.querySelectorAll(".fullcontainerToast");
         setTimeout(() => {
             for (let i = 0; i < fullcontainerToast.length; i++) {
@@ -294,13 +350,13 @@ if (isset($_POST['preorder'])) {
             }
         }, 200);
         setInterval(() => {
-            closeModaltoster(); // Call the closeModaltoster function
+            closeModal(); // Call the closeModal function
         }, 2000);
         const crossClk = () => {
-            closeModaltoster(); // Call the closeModaltoster function
+            closeModal(); // Call the closeModal function
         };
 
-        const closeModaltoster = () => {
+        const closeModal = () => {
             for (let i = 0; i < fullcontainerToast.length; i++) {
                 fullcontainerToast[i].style.right = "-700px";
                 window.location.reload();
@@ -310,8 +366,6 @@ if (isset($_POST['preorder'])) {
             history.replaceState({}, document.title, window.location.pathname);
         }
         document.body.style.overflowX = "hidden";
-
-
 
     </script>
 
