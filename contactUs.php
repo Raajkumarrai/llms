@@ -10,7 +10,7 @@ $userid = $_SESSION['id'];
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="./CSS/homes.css">
+    <link rel="stylesheet" href="./CSS/home.css">
     <link rel="stylesheet" href="./contact.css">
     <title>Contact Us</title>
 </head>

@@ -200,7 +200,7 @@ if (isset($_GET['search'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Category</title>
     <link rel="stylesheet" href="./sidestyles.css">
-    <link rel="stylesheet" href="../CSS/global.css">
+    <link rel="stylesheet" href="../CSS/globals.css">
     <link rel="stylesheet" href="./CSS/model.css">
 
 </head>

@@ -265,7 +265,7 @@ $adminMessage = $urlParts[count($urlParts) - 2] . '/' . $urlParts[count($urlPart
                             <div class="search-box">
                                 <input type="text" name="search" id="search"
                                     value="<?php echo isset($_GET['search']) ? $_GET['search'] : '' ?>"
-                                    placeholder="Search Books..." id="search-box" autocomplete="off">
+                                    placeholder="Search ..." id="search-box" autocomplete="off">
                                 <div>
                                     <svg width="3" height="25" viewBox="0 0 1 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">

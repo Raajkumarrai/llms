@@ -193,9 +193,9 @@ if (isset($_POST['preorder'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./CSS/homes.css">
+    <link rel="stylesheet" href="./CSS/home.css">
     <link rel="stylesheet" href="./CSS/allBook.css">
-    <link rel="stylesheet" href="./CSS/global.css">
+    <link rel="stylesheet" href="./CSS/globals.css">
     <title>LMS Home</title>
 </head>
 <style>
@@ -219,7 +219,7 @@ if (isset($_POST['preorder'])) {
             </div>
             <form action="">
                 <div class="search-box">
-                    <input type="text" name="search" id="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : '' ?>" placeholder="Search Books..." id="search-box" autocomplete="off">
+                    <input type="text" name="search" id="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : '' ?>" placeholder="Search..." id="search-box" autocomplete="off">
                     <div>
                         <svg width="3" height="25" viewBox="0 0 1 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <line x1="0.5" y1="23.0217" x2="0.5" stroke="#757575" />
